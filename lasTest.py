@@ -213,8 +213,8 @@ def get_voxelization_heat(xmin : float, ymin: float, bound : int, voxel_size : f
     blue=0
 
     rscale=2.5
-    gscale=1.25
-    bscale=1.25
+    gscale=0
+    bscale=0.5
 
     for i in range(len(z_data)):
         #Modify how the gradient changes here
@@ -225,8 +225,9 @@ def get_voxelization_heat(xmin : float, ymin: float, bound : int, voxel_size : f
         if blue + (1/len(z_data)) < 0.95:
             blue = blue + (1/len(z_data)) * bscale
         colors.append([red, green, blue])
-        rscale = rscale - 0.025
-        bscale = bscale + 0.025
+        rscale = rscale + 0.00025 # 0.0025, 0.00075
+        gscale = gscale + 0.000125 # 0.00125, 0.000125
+        bscale = bscale + 0.0200 # 0.0125, 0.02
     points = []
     print(len(colors) == len(x_data))
     zmin = min(z_data)
