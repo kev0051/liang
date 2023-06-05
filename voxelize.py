@@ -1,5 +1,6 @@
 import open3d as o3d
 import laspy
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
@@ -98,12 +99,13 @@ def visualize_voxel_grid(voxel_grid : o3d.geometry.VoxelGrid):
     # Once the visualizer is closed destroy the window and clean up
     vis.destroy_window()
 
-def capture_voxel_grid(voxel_grid : o3d.geometry.VoxelGrid, i : int):
+def capture_voxel_grid(voxel_grid : o3d.geometry.VoxelGrid, i : int, save_folder: str):
     vis = o3d.visualization.Visualizer()
     vis.create_window()
     vis.add_geometry(voxel_grid)
     vis.update_geometry(voxel_grid)
     vis.poll_events()
     vis.update_renderer()
-    vis.capture_screen_image("train_%04d.jpg" % i, True)
+    save_path = os.path.join(save_folder, "train_%04d.jpg" % i)
+    vis.capture_screen_image(save_path, True)
     vis.destroy_window()
