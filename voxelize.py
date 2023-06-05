@@ -97,3 +97,13 @@ def visualize_voxel_grid(voxel_grid : o3d.geometry.VoxelGrid):
     vis.run()
     # Once the visualizer is closed destroy the window and clean up
     vis.destroy_window()
+
+def capture_voxel_grid(voxel_grid : o3d.geometry.VoxelGrid, i : int):
+    vis = o3d.visualization.Visualizer()
+    vis.create_window()
+    vis.add_geometry(voxel_grid)
+    vis.update_geometry(voxel_grid)
+    vis.poll_events()
+    vis.update_renderer()
+    vis.capture_screen_image("train_%04d.jpg" % i, True)
+    vis.destroy_window()
