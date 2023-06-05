@@ -23,7 +23,9 @@ for i in range(1):
     v = lasTest.get_voxelization_heat(xmin, ymin, bound, 0.75, lasdata) 
     xmin = xmin + (bound/2) # set for half-window configuration for now
     #voxelization.visualize_voxel_grid(v) # comment this out if you don't want to pull up the image for yourself to view
-    voxelization.capture_voxel_grid(v, i) # i is passed for filename, comment this out if you don't want to save the image
+    
+    #comment this out if you don't want to save the image
+    voxelization.capture_voxel_grid(v, i, 'training_data') # i is for filename, string is folder to save to (make sure folder exists in directory)
 
 # Same as what happens in loop but non heatmap version
 #v = lasTest.get_voxelization(xmin, ymin, bound, 0.75, lasdata)
