@@ -21,7 +21,7 @@ lasdata = 'initData.las'
 # Change the range for number of images to save
 for i in range(1):
     v = lasTest.get_voxelization_heat(xmin, ymin, bound, 0.75, lasdata) 
-    xmin = xmin + 25 # 25 is half the bound, set for half-window configuration for now
+    xmin = xmin + (bound/2) # set for half-window configuration for now
     #voxelization.visualize_voxel_grid(v) # comment this out if you don't want to pull up the image for yourself to view
     voxelization.capture_voxel_grid(v, i) # i is passed for filename, comment this out if you don't want to save the image
 
