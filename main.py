@@ -7,17 +7,28 @@ import tools.data as data
 
 print('bruh')
 
-xmin = 671918.4
-ymin = 3678564.1
-bound = 25
+xmin = 672780.5
+ymin = 3677266.3
+bound = 50
 lasdata = 'initData.las'
 
 #voxelization.view_as_pointcloud(xmin, ymin, bound, lasdata)
-v = lasTest.get_voxelization_heat(xmin, ymin, bound, 0.35, lasdata)
 
-voxelization.visualize_voxel_grid(v)
-#voxelization.rotate(v, 5, 0,)
+# Reference for saving images: http://www.open3d.org/docs/release/tutorial/visualization/non_blocking_visualization.html
+# http://www.open3d.org/docs/release/python_api/open3d.visualization.Visualizer.html
+# https://github.com/isl-org/Open3D/issues/1095
 
-full = voxelization.fill_voxel_grid(v, 1, 25)
+# Change the range for number of images to save
+for i in range(1):
+    v = lasTest.get_voxelization_heat(xmin, ymin, bound, 0.75, lasdata) 
+    xmin = xmin + 25 # 25 is half the bound, set for half-window configuration for now
+    #voxelization.visualize_voxel_grid(v) # comment this out if you don't want to pull up the image for yourself to view
+    voxelization.capture_voxel_grid(v, i) # i is passed for filename, comment this out if you don't want to save the image
 
+# Same as what happens in loop but non heatmap version
+#v = lasTest.get_voxelization(xmin, ymin, bound, 0.75, lasdata)
+#voxelization.visualize_voxel_grid(v)
+
+# Other approach stuff
+#full = voxelization.fill_voxel_grid(v, 1, 25)
 #voxelization.visualize_voxel_grid(full[0])
