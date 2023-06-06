@@ -83,8 +83,8 @@ def fill_voxel_grid(v : o3d.geometry.VoxelGrid, voxel_size : int, bound : int):
 def visualize_voxel_grid(voxel_grid : o3d.geometry.VoxelGrid):
     # for v in full_voxel_grid.get_voxels():
     #     print(v.grid_index)
-    print('min: ', voxel_grid.get_min_bound())
-    print('max: ', voxel_grid.get_max_bound())
+    #print('min: ', voxel_grid.get_min_bound())
+    #print('max: ', voxel_grid.get_max_bound())
 
     # Initialize a visualizer object
     vis = o3d.visualization.Visualizer()
@@ -108,4 +108,5 @@ def capture_voxel_grid(voxel_grid : o3d.geometry.VoxelGrid, i : int, save_folder
     vis.update_renderer()
     save_path = os.path.join(save_folder, "train_%04d.jpg" % i)
     vis.capture_screen_image(save_path, True)
+    print("Saved", save_path)
     vis.destroy_window()
