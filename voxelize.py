@@ -152,8 +152,7 @@ def get_tree(xmin : float, ymin : float, xmax : float, ymax : float, las_file : 
             y_tree[0] = y_data[i]
             z_tree[0] = z_data[i]
 
-    #print("Max z in bound:", zmax)
-    #print("Num points in bound:", len(z_data))
+    print("Tree found -> Coordinates: (", x_tree[0], ",", y_tree[0], ")")
 
     # INITIAL NEIGHBORS: Add points close below the maximum to the tree array
     for i in range(len(z_data)):
@@ -166,7 +165,7 @@ def get_tree(xmin : float, ymin : float, xmax : float, ymax : float, las_file : 
     # Find the 4 points with the largest z values in the tree and add the points close below them to the tree array (run the algorithm)
     # (xmax, ymax), (xmin, ymin), (xmax, ymin), (xmin, ymax)
 
-    # Sort starts here
+    # Sort starts here (Max is at z_tree[0]), sorted in descending order
     x_tree = np.array(x_tree)
     y_tree = np.array(y_tree)
     z_tree = np.array(z_tree)
@@ -177,13 +176,13 @@ def get_tree(xmin : float, ymin : float, xmax : float, ymax : float, las_file : 
 
     # Algorithm starts here
     for i in range(len(z_data)):
-        for j in range(4):
+        for j in range(20, len(z_tree)-20, 20):
             if ((x_data[i] < x_tree[j] + x_flex) and (x_data[i] > x_tree[j] - x_flex)) and ((y_data[i] < y_tree[j] + y_flex) and (y_data[i] > y_tree[j] - y_flex)) and (z_data[i] < z_tree[j]): #and (z_data[i] > z_tree[j] - z_flex)):
                 # If point not already in tree
                 if (x_data[i] not in x_tree) or (y_data[i] not in y_tree) or (z_data[i] not in z_tree):
-                    np.append(x_tree, x_data[i]) #x_tree.append(x_data[i])
-                    np.append(y_tree, y_data[i]) #y_tree.append(y_data[i])
-                    np.append(z_tree, z_data[i]) #z_tree.append(z_data[i])
+                    x_tree = np.append(x_tree, x_data[i]) #x_tree.append(x_data[i])
+                    y_tree = np.append(y_tree, y_data[i]) #y_tree.append(y_data[i])
+                    z_tree = np.append(z_tree, z_data[i]) #z_tree.append(z_data[i])
 
     # Sort starts here
     idx = np.flip(np.argsort(z_tree))
@@ -192,8 +191,8 @@ def get_tree(xmin : float, ymin : float, xmax : float, ymax : float, las_file : 
     z_tree = np.array(z_tree)[idx]
 
     print("Points in tree:", len(z_tree))
-    print("z_tree[0]:", z_tree[0])
-    print("z_tree[len(z_tree)-1]:", z_tree[len(z_tree)-1])
+    #print("z_tree[0]:", z_tree[0])
+    #print("z_tree[len(z_tree)-1]:", z_tree[len(z_tree)-1])
 
     # Visualization starts here (temporary)
 
@@ -213,5 +212,7 @@ def get_tree(xmin : float, ymin : float, xmax : float, ymax : float, las_file : 
     voxel = voxelize(points, colors, .75, bound)
 
     return voxel
+
+    
 
     
