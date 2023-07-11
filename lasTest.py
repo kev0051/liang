@@ -138,8 +138,10 @@ def get_voxelization(xmin : float, ymin: float, bound : int, voxel_size : float,
     y_data = []
     z_data = []
     colors = []
+    count = 0
     for i in point_data:
         if i[0] > xmin and i[0] <  xmax and i[1] > ymin and i[1] < ymax:
+            count = count+1
             x_data.append(i[0])
             y_data.append(i[1])
             z_data.append(i[2])
@@ -178,10 +180,12 @@ def get_voxelization(xmin : float, ymin: float, bound : int, voxel_size : float,
     voxel = voxelize(points, colors, voxel_size, bound)
 
     #print(max(z_data) - min(z_data))
+    #print("Number of points: ", count)
 
     return voxel
 
 def get_voxelization_heat(xmin : float, ymin: float, bound : int, voxel_size : float, las_file : str):
+
     xmax = xmin + bound
     ymax = ymin + bound
     las = laspy.read(las_file)
@@ -243,3 +247,4 @@ def get_voxelization_heat(xmin : float, ymin: float, bound : int, voxel_size : f
     #print(max(z_data) - min(z_data))
 
     return voxel
+
