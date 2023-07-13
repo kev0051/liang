@@ -248,3 +248,68 @@ def get_voxelization_heat(xmin : float, ymin: float, bound : int, voxel_size : f
 
     return voxel
 
+def get_voxelization_heat_gsc(xmin : float, ymin: float, bound : int, voxel_size : float, las_file : str):
+
+    xmax = xmin + bound
+    ymax = ymin + bound
+    las = laspy.read(las_file)
+    #Recording the data in a numpy array
+    point_data = np.stack([las.x, las.y, las.z, las.classification], axis = 0).transpose((1,0))
+
+    x_data = []
+    y_data = []
+    z_data = []
+    classes = []
+    colors = []
+    for i in point_data:
+        if i[0] > xmin and i[0] <  xmax and i[1] > ymin and i[1] < ymax:
+            x_data.append(i[0])
+            y_data.append(i[1])
+            z_data.append(i[2])
+            classes.append(i[3])
+    xarr = np.array(x_data)
+    yarr = np.array(y_data)
+    zarr = np.array(z_data)
+    carr = np.array(classes)
+    #Associate x_data and y_data lists with z_data, then sort the all of them in descending z_data order
+    idx = np.flip(np.argsort(zarr))
+    xarr = np.array(xarr)[idx]
+    yarr = np.array(yarr)[idx]
+    zarr = np.array(zarr)[idx]
+    carr = np.array(carr)[idx]
+
+    red=1
+    green=1
+    blue=1
+
+    rscale=0
+    gscale=0
+    bscale=0
+
+    for i in range(len(z_data)):
+        #Modify how the gradient changes here
+        if red + (1/len(z_data)) > 0.05: # Don't want black voxels (reserved for non-tree)
+            red = red - (1/len(z_data)) * rscale
+        if green + (1/len(z_data)) > 0.05:
+            green = green - (1/len(z_data)) * gscale
+        if blue + (1/len(z_data)) > 0.05:
+            blue = blue - (1/len(z_data)) * bscale
+        if carr[i] == 6 or carr[i] == 2:
+            colors.append([0, 0, 0])
+        else:
+            colors.append([red, green, blue])
+        rscale = rscale + 0.00005 # 0.0025, 0.00075
+        gscale = gscale + 0.00005 # 0.00125, 0.000125
+        bscale = bscale + 0.00005 # 0.0125, 0.02
+    points = []
+    #print(len(colors) == len(x_data))
+    zmin = min(z_data)
+    for i in range(len(x_data)):
+        points.append([xarr[i] - xmin, yarr[i] - ymin, zarr[i] - zmin])
+    voxel = voxelize(points, colors, voxel_size, bound)
+
+    #print(max(z_data) - min(z_data))
+
+    return voxel
+
+
